@@ -1,0 +1,199 @@
+#app > div {
+  width: 100%;
+  height: 100%;
+}
+
+.car {
+  width: 100%;
+  height: 100%;
+  background: whitesmoke;
+  display: flex;
+  flex-direction: column;
+}
+
+.car .content {
+  height: 100%;
+  flex: 1;
+  overflow: auto;
+}
+
+.car .content .img {
+  position: relative;
+  height: 3.29rem;
+  overflow: hidden;
+}
+
+.car .content .img img {
+  width: 100%;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  position: absolute;
+}
+
+.car .content .img span {
+  position: absolute;
+  bottom: .3rem;
+  right: .3rem;
+  color: #fff;
+  padding: 1px .1rem;
+  border-radius: .2rem;
+  background: rgba(0, 0, 0, 0.6);
+  font-size: .24rem;
+}
+
+.car .content .info {
+  padding: .36rem .2rem .3rem;
+  background: #fff;
+  position: relative;
+}
+
+.car .content .info p {
+  max-width: 3.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.car .content .info p:first-child {
+  font-size: .36rem;
+  color: red;
+  font-weight: 500;
+}
+
+.car .content .info p:first-child span {
+  font-size: .32rem;
+  font-weight: 400;
+}
+
+.car .content .info p:nth-child(2) {
+  font-size: .26rem;
+  color: silver;
+}
+
+.car .content .info .action {
+  padding-top: .2rem;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  width: 50%;
+  position: absolute;
+  right: .1rem;
+  top: .22rem;
+}
+
+.car .content .info .action button {
+  background: #00afff;
+  color: #fff;
+  border-radius: .1rem;
+  font-size: .32rem;
+  height: .7rem;
+  width: 3.45rem;
+  border: none;
+  box-sizing: border-box;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.car .content .info .flex-row {
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+}
+
+.car .content .car-list .c-type {
+  border-top: .15rem solid #f4f4f4;
+  padding: 0 .3rem;
+  font-size: .32rem;
+  height: .77rem;
+  line-height: .77rem;
+  background: #fff;
+}
+
+.car .content .car-list .c-type span {
+  padding-right: .46rem;
+}
+
+.car .content .car-list .c-type span.active {
+  color: #3aacff;
+}
+
+.car .content .car-list .list > div > p {
+  padding: 0 .2rem;
+  height: .5rem;
+  line-height: .5rem;
+  font-size: .26rem;
+  color: #999;
+  background: #f4f4f4;
+}
+
+.car .content .car-list .list ul li {
+  background: #fff;
+  padding: 0 .2rem;
+  overflow: hidden;
+  margin-top: .2rem;
+}
+
+.car .content .car-list .list ul li p:first-child {
+  padding: .26rem 0 .18rem;
+  font-size: .3rem;
+  line-height: 1;
+  color: #3d3d3d;
+}
+
+.car .content .car-list .list ul li p:nth-child(2) {
+  color: #bdbdbd;
+  font-size: .26rem;
+}
+
+.car .content .car-list .list ul li p:nth-child(3) {
+  text-align: right;
+  padding-bottom: .1rem;
+  font-size: .24rem;
+  color: #818181;
+}
+
+.car .content .car-list .list ul li p:nth-child(3) span:nth-child(2) {
+  font-size: .3rem;
+  color: #ff2336;
+  margin-left: .1rem;
+}
+
+.car .content .car-list .list ul li button {
+  border: none;
+  border-top: 1px solid #eee;
+  width: 110%;
+  height: .8rem;
+  font-size: .32rem;
+  color: #00afff;
+  background: #fff;
+  font-weight: 500;
+  margin-left: -.3rem;
+}
+
+.car .content .car-list .list ul li:last-child {
+  border-bottom: 0;
+}
+
+.car .content .car-list .list ul li:first-child {
+  margin-top: 0;
+}
+
+.car .bottom {
+  width: 100%;
+  bottom: 0;
+  z-index: 99;
+  background: #3aacff;
+  height: 1rem;
+  color: #fff;
+  text-align: center;
+}
+
+.car .bottom p:first-child {
+  font-size: .32rem;
+  margin-top: .12rem;
+  font-weight: 500;
+}
+
+.car .bottom p:nth-child(2) {
+  font-size: .24rem;
+}

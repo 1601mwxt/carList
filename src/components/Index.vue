@@ -14,7 +14,7 @@
         </div>
       </div>
       <!-- carlist列表 -->
-      <div ref='section' class="car-type active" id='carType' v-if='isCarType'
+      <div ref='section' :class="isCarType?'car-type active':'car-type'" id='carType' v-if='isCarType'
        @touchmove.stop="Move" @touchstart='Start'
        @touchend='End'>
         <div id="typeList" v-if='carList'>
@@ -131,7 +131,7 @@
       End(){
         this.$refs.section.style=''
         if(this.offsetX>100){
-          this.CarType(false)
+          this.changeCarType(false)
         }
       }
     },
@@ -149,4 +149,12 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   @import url('../../static/css/index/style.css');
+  .car-type{
+      transform: translate3d(100%, 0, 0);
+    box-shadow: -3px 0px 10px 0px rgba(0,0,0,.1);
+  }
+  .active{
+      transform: translate3d(0,0,0);
+      transition: transform 3s linear;
+  }
 </style>

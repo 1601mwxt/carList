@@ -25,7 +25,7 @@
                     </li> 
                     <li>
                         <input type="number" placeholder="请输入六位验证码" maxlength="6" value="num" v-model="num">
-                        <button :class='flag?"btn isDisable":"btn isNotDisable"' :disabled="flag" @click="verification">{{randomNum}}</button>
+                        <button :class='isSendSMS?"btn isDisable":"btn isNotDisable"' :disabled="flag" @click="clicks">{{isSendSMS?timer+'秒后重新发送':'获取短信验证码'}}</button>
                     </li> 
                     <li @click="changeShowCity(true),choosee">
                         <span>城市</span> 
@@ -113,6 +113,8 @@ export default {
             defaultCity:state=>state.quotation.defaultCity,
             DealerList:state=>state.quotation.DealerList,
             temp:state=>state.quotation.temp,
+            isSendSMS:state=>state.quotation.isSendSMS,
+            timer:state=>state.quotation.timer
             // randomNum:state=>state.quotation.randomNum
         })
     },
@@ -131,7 +133,8 @@ export default {
         ...mapActions({
             getCity:'quotation/getCity',
             getCityList:'quotation/getCityList',
-            getDealerList:'quotation/getDealerList'
+            getDealerList:'quotation/getDealerList',
+            getCapture:'quotation/getCapture'
 
         }),
         goType(){
@@ -140,6 +143,8 @@ export default {
         },
        
         question(){
+             _hmt.push(['_trackEvent',' 车轮报价', 'tap', '询价最低按钮']);
+
             let usernameReg=/^([\u4e00-\u9fa5]){2,4}$/; //只能是中文，长度为2-7位
             let phoneReg=/^1[3|4|5|8|7][0-9]{9}$/;
             if(!(usernameReg.test(this.username))){
@@ -151,6 +156,27 @@ export default {
             }else{
                 this.changeResult(true)
             }
+        },
+        // 点击获取验证码
+        
+        clicks(){
+             _hmt.push(['_trackEvent',' 车轮报价', 'tap', '获取验证码']);
+
+            // console.log(this.isSendSMS)
+            if(this.isSendSMS){
+                return
+            }
+
+            let phoneReg=/^1[3|4|5|8|7][0-9]{9}$/;
+
+            let phone=this.phoneNum;
+            if(!(phoneReg.test(phone))){
+                alert('请输入正确的手机号码')
+                return
+                // this.getCapture(phone)
+            }
+            this.getCapture(phone)
+
         },
         // 选择经销商
         change(val,ind){
@@ -165,20 +191,20 @@ export default {
         choosee(e){
             console.log(e)
         },
-        verification(){
-            let timer=setInterval(()=>{
-                this.count--;
-                this.flag=true;
-                this.randomNum= this.count+'s';
-                if(this.count===0){
-                    clearInterval(timer)
-                    this.flag=false;
-                    this.count=6;
-                    this.randomNum='获取验证码'
-                }
-                console.log(this.count);
-            },1000)
-        }
+        // verification(){
+        //     let timer=setInterval(()=>{
+        //         this.count--;
+        //         this.flag=true;
+        //         this.randomNum= this.count+'s';
+        //         if(this.count===0){
+        //             clearInterval(timer)
+        //             this.flag=false;
+        //             this.count=6;
+        //             this.randomNum='获取验证码'
+        //         }
+        //         console.log(this.count);
+        //     },1000)
+        // }
     },
     mounted() {
         this.getCity()

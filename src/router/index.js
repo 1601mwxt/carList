@@ -10,18 +10,23 @@ const Color=()=>import('../components/Color')
 const Type=()=>import('../components/Type')
 const Cartype=()=>import('../components/Cartype')
 const Login=()=>import('../components/Login')
-
+const Swiper=()=>import('../components/swiper.vue')
 
 
 // 需要安装插件 cnpm i -D babel-plugin-syntax-dynamic-import
 Vue.use(Router)
 
 let router=new Router({
-  mode:'hash',
+  mode:'history',
   routes: [
     {
       path: '/',
       redirect:'/index'
+    },
+    {
+      path:'/swiper',
+      component:Swiper,
+      name:'Swiper'
     },
     {
       path: '/Login',

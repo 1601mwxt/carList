@@ -1,4 +1,4 @@
-import {City,getCityList,getDealerList} from '../../api/api'
+import {City,getCityList,getDealerList,getCapture} from '../../api/api'
 let state={
     showCity:false,
     city:[],
@@ -10,7 +10,10 @@ let state={
     temp:[],
     dealerIds:[],
     randomNum:'获取验证码',
-    flag:true
+    flag:true,
+    timer:0,// 倒计时
+    isSendSMS:false// 是否发送短信验证码
+
 }
 let mutations={
     // verification:()=>{
@@ -61,11 +64,40 @@ let mutations={
        }else{
             state.dealerIds.push(payload)
        }
+    },
+    // 验证码
+    updateCapture:(state,payload)=>{
+        console.log(payload)
+        if(payload.code==0){
+            state.isSendSMS=true;
+            state.timer=60;
+            let inter=setInterval(()=>{
+                state.timer--;
+                console.log(state.timer)
+                if(state.timer==0){
+                    clearInterval(inter);
+                    state.isSendSMS=false;
+                    state.timer=60
+                }
+            },1000)
+        }else{
+            alert(payload.msg)
+        }
     }
     
     
 }
 let actions={
+    // 验证码
+    getCapture:({commit},payload)=>{
+        // console.log(payload)
+        getCapture(payload).then(body=>{
+            if(body.code==0){
+                console.log(body)
+                commit('updateCapture',body)
+            }
+        })
+    },
     getCity:({commit},payload)=>{
         City().then(res=>{
             if(res.code===1){

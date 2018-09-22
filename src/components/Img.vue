@@ -15,7 +15,8 @@
             <div v-for="(item,index) in carImage" :key="index">
                 <ul>
                     <li v-for="(value,key) in item.List" :key='key'  @click="goImgDetail(key)">
-                        <div v-if="key==0" @click="initImgDetailList({SerialID:$route.query.id,ImageID:item.Id})" >
+                        <div v-if="key==0" @click="initImgDetailLists({SerialID:$route.query.id,ImageID:item.Id}),changeIsImgList(true)" >
+                            
                             <p>{{item.Count}}</p>
                             <p>{{item.Name}}</p>
                         </div>
@@ -24,66 +25,23 @@
                 </ul>
             </div>
         </div>
-        <ul class="img-list" v-if='imglist' >
-            <li v-for='(val,ind) in ImgDetailList' :key='ind' @click="changSwiper"><img :src="val.Url" alt="" @click="enlargement(ind)"></li>
-
-        </ul>
-        <!-- 轮播 -->
-        <swiper :options="swiperOption" class="img-detail swiper-container-horizontal" v-if='swipers' ref='mySwiper'>
-            <div class="swiper-wrapper">
-                <swiper-slide class="swiper-slide swiper-slide-active" style="width: 375px;">
-                    <li class="swiper-zoom-container" @click="changSwiper" >
-                        <img :src="enlargementImg.Url" class="swiper-lazy" >
-                    </li>
-                </swiper-slide>
-                  <!-- Optional controls -->
-        <!-- <div class="swiper-pagination" slot="pagination"></div>
-        <div class="swiper-button-prev" slot="button-prev"></div>
-        <div class="swiper-button-next" slot="button-next"></div> -->
+        <ul class="img-list" v-if='imglist' @scroll="scroll" ref="scroll">
+            <div  ref="element">
+                <li v-for='(val,ind) in ImgDetailList' :key='ind' @click="changSwiper" ><img :src="val.Url.replace('{0}', val.LowSize)" alt="" ></li>
             </div>
-        </swiper>
+            
+        </ul>
+        <SwiperWrap v-if='swipers' @click="change"></SwiperWrap>
     </div>
 </template>
 
 <script>
-
+import Swiper from 'swiper'; 
 import {mapActions,mapMutations,mapState} from 'vuex';
- import { swiper, swiperSlide } from 'vue-awesome-swiper'
-
+import SwiperWrap from './swiper.vue'
 export default {
-     data() {
-            return {
-                    // page: 1,
-                    // swiperOption: {
-                    //     speed: 500,
-                    //     lazy: true
-                    // }
-                
-            };
-        },
+  
     computed:{
-        swiperOption: {
-                     notNextTick: true,
-                    // spaceBetween: 30, //板块间距
-                    loop: false, //无缝轮播
-                    centeredSlides: true,
-                    autoplay: {
-                        //自动轮播
-                        delay: 3000,
-                        disableOnInteraction: false
-                    },
-                    pagination: {
-                        el: ".swiper-pagination",
-                        clickable: true
-                    },
-                    navigation: {
-                        nextEl: ".swiper-button-next",
-                        prevEl: ".swiper-button-prev"
-                    }
-                },
-        swiper() {
-                return this.$refs.mySwiper.swiper;
-            },
         ...mapState({
             carImage:state=>state.index.carImage,
             ImgDetailList:state=>state.color.ImgDetailList,
@@ -92,24 +50,31 @@ export default {
             enlargementImg:state=>state.color.enlargementImg,
             colorName:state=>state.index.colorName,
             carsType:state=>state.index.carsType,
+            ImageID:state=>state.color.ImageID,
            
-        })
-
+        }),
+        // swiper(){
+        //     return this.$refs.mySwiper.swiper
+        // }
     },
     methods:{
+        
         ...mapActions({
             initImageDatas:'index/initImageDatas',
-            initImgDetailList:'color/initImgDetailList',
+            initImgDetailLists:'color/initImgDetailLists',
             
         }),
         ...mapMutations({
             initImageData:'index/initImageData',
-            InitImgDetailList:'color/InitImgDetailList',
+            initImgDetailList:'color/initImgDetailList',
             changSwiper:'color/changSwiper',
-            enlargement:'color/enlargement'
+            enlargement:'color/enlargement',
+            changeIsImgList:'color/changeIsImgList'
         }),
+        change(){
+            console.log('000')
+        },
         goColor(route){
-            // console.log(route)
             this.$router.push({name:'color',params:{id:route.query.id}})
         },
          goType(){
@@ -117,35 +82,32 @@ export default {
         },
         goImgDetail(key){
             console.log('key=========',key)
-        }
+        },
+        scroll(){
+            if(this.flag){
+                return 
+            }
+                let scrollEle = this.$refs.scroll.scrollTop;
+                let elementHeight = this.$refs.element.getBoundingClientRect().height;
+                if (scrollEle + window.innerHeight + 20 > elementHeight){
+                    this.flag=true;
+                    this.initImgDetailLists({SerialID:this.$route.query.id,ImageID:this.ImageID,callback:()=>{
+                        this.flag=false
+                    }});
+                }
+               
+            }
     },
-     components: {
-            swiper,
-            swiperSlide
-        },
-      mounted() {
-        //   this.initImageData()
-           // you can use current swiper instance object to do something(swiper methods)
-   // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
-   console.log('this is current swiper instance object', this.swiper)
-   this.swiper.slideTo(3, 1000, false)
-    console.log('mounted');
-            // 鼠标覆盖停止自动切换
-            // console.log(this.swipe)
-            this.swiper.el.onmouseover = function() {
-                this.swiper.autoplay.stop();
-                console.log("stop");
-            };
-            //鼠标离开开始自动切换
-            this.swiper.el.onmouseout = function() {
-                this.swiper.autoplay.start();
-                console.log("start");
-            };
-        },
+    components:{
+        SwiperWrap
+    },
+    mounted(){
+         this.initImgDetailLists({SerialID:this.$route.query.id,ImageID:this.ImageID});
+    }
 }
 </script>
 
 <style>
-@import url('swiper/dist/css/swiper.css');
+@import url('../static/css/swiper.min.css');
 @import url('../../static/css/carImg/style.css');
 </style>

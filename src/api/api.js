@@ -105,7 +105,7 @@ export let City=()=>{
  * @return promise       返回一个promise
  */
 
- export let getImgDetailList=(id,imgId,colorId,carId,page=1,pageSize=30)=>{
+ export let getImgDetailList=(id,imgId=6,page=1,pageSize=30,colorId,carId)=>{
      let search =`SerialID=${id}&ImageID=${imgId}&Page=${page}&PageSize=${pageSize}`;
      if(colorId){
          search+=`&ColorID=${colorId}`;
@@ -115,3 +115,14 @@ export let City=()=>{
      };
      return sendRequest(`https://baojia.chelun.com/v2-car-getCategoryImageList.html?${search}`)
  };
+/**
+ * 获取短信验证码
+ * @param phone      用户的手机号
+ * @return           promise
+ */
+export let getCapture=(phone)=>{
+    return sendRequest(`http://123.206.55.50:8080/getCapture`,'POST',{phone})
+    
+}
+
+

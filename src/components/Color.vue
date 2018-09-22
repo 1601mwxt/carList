@@ -35,8 +35,7 @@ export default {
         ...mapActions({
             initColor:'color/initColor',
             initImageDatas:'index/initImageDatas',
-
-            initImgDetailList:'color/initImgDetailList'
+            initImgDetailLists:'color/initImgDetailLists'
         }),
         ...mapMutations({
             changeYears:'color/changeYears',

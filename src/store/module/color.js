@@ -5,14 +5,14 @@ let state={
     changeYear:'',
     colordetail:[],
     ImgDetailList:[],
+    img:[],
     imglist:false,
     SerialID:null,
-    ImageID:null,
+    ImageID:6,
     ColorId:null,
     swipers:false,
     enlargementImg:{},
-    
-
+    page:1
 }
 let actions={
     initColor:({commit},payload)=>{
@@ -24,16 +24,15 @@ let actions={
             }
         })
     },
-    initImgDetailList:({commit},payload)=>{
+    initImgDetailLists:({commit},payload)=>{
         state.SerialID=payload.SerialID;
         state.ImageID=payload.ImageID;
-        // console.log(payload)
-        // console.log(state.ColorId)
-        // console.log(state.SerialID)
-        getImgDetailList(state.SerialID,state.ImageID).then(res=>{
-            console.log(res)
+        getImgDetailList(state.SerialID,state.ImageID,state.page).then(res=>{
             if(res.code===1){
-                commit('InitImgDetailList',res.data)
+                commit('InitImgDetailList',res.data.List)
+                if(payload.callback){
+                    payload.callback()
+                }
             }else{
                 alert(res.msg)
             }
@@ -41,19 +40,6 @@ let actions={
     }
 }
 let mutations={
-    // changeCarsType:(state,payload)=>{
-    //     console.log(payload)
-    //     state.carsType=payload
-    // },
-    // changeCarId:(state,payload)=>{
-    //     state.carId=payload
-    //     // console.log(payload)
-    // },
-    // changeColor:(state,payload)=>{
-    //     console.log(payload)
-    //     state.colorName=payload.name;
-    //     state.ColorId=payload.id
-    // },
     getColorData:(state,payload)=>{
         state.list=payload;
         for(let i in payload){
@@ -69,36 +55,24 @@ let mutations={
     changeYears:(state,payload)=>{
         state.changeYear=payload;
         state.colordetail=state.list[state.changeYear];
-        console.log(state.colordetail)
+    },
+    changeIsImgList:(state,payload)=>{
+        state.imglist=payload
     },
     InitImgDetailList:(state,payload)=>{
-
         // let reg = /(\{)([\d])(\})/g;
-        // payload.map(item => {
-        //     item.List.map(val => {
-        //         val.Url = val.Url.replace(reg, (a, b, c) => {
-        //         return val.LowSize
-        //         })
-        //     })
-        // })
+        // payload.List.forEach(item => {
+        //     item.Url = item.Url.replace(reg, (a, b, c) => {
+        //                 return item.LowSize
+        //      })
+        // });
         // console.log(payload)
-        // state.carImage=payload
-        let reg = /(\{)([\d])(\})/g;
-        payload.List.forEach(item => {
-            item.Url = item.Url.replace(reg, (a, b, c) => {
-                        return item.LowSize
-             })
-        });
-        // console.log(payload.List)
-        state.ImgDetailList=payload.List
-        state.imglist=true
-        // console.log(state.ImgDetailList)
+        // console.log(state.img)
+
+        state.ImgDetailList=state.ImgDetailList.concat(payload);
+        state.page++;
+        state.imgList=true;
     },
-    // changeColorId:(state,payload)=>{
-    //     state.ColorId=payload;
-        
-    //     // console.log(payload)
-    // },
     changeSerialID:(state,payload)=>{
         state.SerialID=payload
     },
@@ -107,9 +81,7 @@ let mutations={
     },
     enlargement:(state,payload)=>{
         state.enlargementImg=state.ImgDetailList[payload];
-
     }
-   
 }
 export default{
     namespaced:true,

@@ -1,5 +1,6 @@
 <template>
-     <div class="wrapper animated flipInY">
+<div class='login fixed' style='backgroundColor: #273849'>
+     <div class="wrapper animated flipInY"     style='backgroundColor: #273849,height:100%'>
         <div class="logo"><a href="#"><i class="fa fa-bolt"></i> <span>Maniac</span></a></div>
         <div class="box">
             <div class="header clearfix">
@@ -7,7 +8,7 @@
                 <div class="pull-right"><a href="#"><i class="fa fa-times"></i></a></div>
             </div>
             <form id="loginform" method="post" action="index.html">
-                <div class="alert alert-warning no-radius no-margin padding-sm"><i class="fa fa-info-circle"></i> Please sign in to maniac dashboard</div>
+                <div class="alert alert-warning no-radius no-margin padding-sm" style="fontSize:14px"><i class="fa fa-info-circle"></i> Please sign in to maniac dashboard</div>
                 <div class="box-body padding-md">
                     <div class="form-group">
                         <input type="text" v-model="username" name="username" class="form-control" placeholder="Username"/>
@@ -16,7 +17,7 @@
                         <input type="password" v-model="password" name="password" class="form-control" placeholder="Password"/>
                     </div>          
                     <div class="form-group">
-                        <input type="checkbox" /> <small>Remember me</small>
+                        <input type="checkbox" /> <small style="fontSize:14px">Remember me</small>
                     </div>  
                     <div class="box-footer">                                                               
                         <button type="button" class="btn btn-success btn-block" v-on:click="Login">Sign in</button>  
@@ -42,6 +43,8 @@
             </ul>
         </footer>
     </div>
+</div>
+    
 </template>
 
 <script>
@@ -61,7 +64,8 @@ export default {
     },
     methods:{
         Login(){
-            // console.log()
+             _hmt.push(['_trackEvent',' 车轮报价', 'tap', '登陆按钮']);
+
             if(this.username===this.name&&this.password===this.pwd){
                 alert('登陆成功');
                 window.localStorage.setItem('status','success')
@@ -86,6 +90,6 @@ export default {
     @import url('../static/css/font-awesome.min.css');
     @import url('../static/css/animate/animate.min.css');
     @import url('../static/css/bootstrapValidator/bootstrapValidator.min.css');
-    @import url('../static/css/iCheck/all.css');
+    @import url('../static/css/iCheck/all.css'); 
     @import url('../static/css/style.css');
 </style>
